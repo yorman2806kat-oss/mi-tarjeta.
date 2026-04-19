@@ -6,151 +6,66 @@
     <title>Katherine Hernández - My Queen</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #050505;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            text-align: center;
+            margin: 0; padding: 0;
+            background-color: #050505; color: white;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            height: 100vh; overflow: hidden; text-align: center;
             cursor: pointer;
         }
-
         .container { position: relative; z-index: 2; }
-        h1 { font-size: 2.5rem; margin-bottom: 5px; font-weight: 600; }
-        h2 { font-size: 1.8rem; margin-top: 0; font-weight: 400; color: #eee; }
-        
-        .message {
-            font-size: 1.1rem;
-            color: #ccc;
-            max-width: 500px;
-            margin: 15px auto;
-            font-style: italic;
-        }
-
+        h1 { font-size: 2.5rem; margin-bottom: 5px; }
+        h2 { font-size: 1.8rem; margin-top: 0; color: #eee; font-weight: 300; }
+        .message { font-size: 1.1rem; color: #ccc; font-style: italic; margin: 15px auto; max-width: 80%; }
         .heart-main {
-            font-size: 3.5rem;
-            color: #ff0000;
-            margin: 20px 0;
+            font-size: 4rem; color: #ff0000; margin: 20px 0;
             filter: drop-shadow(0 0 15px #ff0000);
             animation: pulse 1.5s infinite;
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-
-        .date-container {
-            position: relative;
-            display: inline-block;
-            margin-top: 25px;
-            padding: 10px 40px;
-        }
-
-        .date-text {
-            font-size: 5.5rem;
-            font-weight: 800;
-            position: relative;
-            z-index: 3;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-        }
-
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .date-container { position: relative; display: inline-block; margin-top: 25px; }
+        .date-text { font-size: 5rem; font-weight: 800; position: relative; z-index: 3; text-shadow: 0 0 15px white; }
         .lightning {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-3deg);
-            width: 115%;
-            height: 15px;
-            background: #00f2ff;
-            filter: blur(10px);
-            box-shadow: 0 0 20px #00d4ff, 0 0 50px #0044ff, 0 0 100px #0022ff;
-            z-index: 1;
-            border-radius: 50%;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-3deg);
+            width: 120%; height: 12px; background: #00f2ff; filter: blur(8px);
+            box-shadow: 0 0 20px #00d4ff, 0 0 40px #0044ff; z-index: 1; border-radius: 50%;
         }
-
         #status-msg {
-            position: fixed;
-            bottom: 20px;
-            color: #ff2d55;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: blink 1s infinite;
+            position: fixed; bottom: 30px; color: #00f2ff;
+            font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;
         }
-
-        @keyframes blink { 
-            0%, 100% { opacity: 1; } 
-            50% { opacity: 0.3; } 
-        }
-
-        /* Corazones decorativos */
-        .heart-bg {
-            position: absolute;
-            width: 50px; height: 50px;
-            border: 2px solid #ff2d55;
-            transform: rotate(45deg);
-            filter: drop-shadow(0 0 10px #ff2d55);
-            opacity: 0.3;
-        }
-        .heart-bg::before, .heart-bg::after {
-            content: ''; position: absolute;
-            width: 50px; height: 50px;
-            border: 2px solid #ff2d55; border-radius: 50%;
-        }
-        .heart-bg::before { top: -25px; left: -2px; border-bottom: none; border-right: none; }
-        .heart-bg::after { left: 25px; top: -2px; border-bottom: none; border-left: none; }
-        .h1 { top: 10%; left: 10%; } .h2 { bottom: 10%; right: 10%; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
     </style>
 </head>
-<body onclick="startAll()">
-
-    <div class="heart-bg h1"></div>
-    <div class="heart-bg h2"></div>
+<body onclick="tocarMusica()">
 
     <div class="container">
         <h1>Katherine Hernández</h1>
         <h2>My Queen</h2>
         <p class="message">"Eres y siempre serás mi amor, te amo mi reina."</p>
-
         <div class="heart-main">❤</div>
-
         <div class="date-container">
             <div class="lightning"></div>
             <div class="date-text">28/06/20</div>
         </div>
     </div>
 
-    <div id="status-msg">TOCA LA PANTALLA PARA EL AUDIO</div>
+    <div id="status-msg">TOCA LA PANTALLA</div>
 
-    <audio id="musica" loop crossorigin="anonymous">
-        <source src="https://www.mboxdrive.com/A%c3%b1oranzas.mp3" type="audio/mpeg">
+    <audio id="musica" loop>
+        <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        function startAll() {
+        function tocarMusica() {
             var audio = document.getElementById("musica");
-            
-            // Forzar carga y reproducción
-            audio.load();
             audio.play().then(() => {
                 document.getElementById("status-msg").style.display = "none";
-                console.log("¡Jorge Guerrero sonando!");
-            }).catch(e => {
-                alert("Por favor, toca de nuevo para activar.");
-                console.log("Error de audio:", e);
+            }).catch(error => {
+                console.log("Esperando clic...");
             });
         }
-        
-        // Soporte extra para móviles
-        document.body.addEventListener('touchstart', startAll, {once: true});
     </script>
 </body>
 </html>
