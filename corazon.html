@@ -139,28 +139,31 @@
         </div>
     </div>
 
-    <audio id="player" loop>
-    <source src="musica.mp3" type="audio/mpeg">
-    <source src="musica.ogg" type="audio/ogg">
-    Tu navegador no soporta audio.
+    <audio id="player" loop preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
-   <script>
+
+<button onclick="playMusic()" style="position: fixed; top: 10px; right: 10px; z-index: 999; padding: 10px; background: #00f2ff; border: none; border-radius: 5px; cursor: pointer;">
+    PROBAR AUDIO
+</button>
+
+<script>
     function playMusic() {
         var audio = document.getElementById("player");
         
-        // Intentar reproducir y capturar posibles errores
         audio.play().then(() => {
-            console.log("Reproducción iniciada correctamente");
-            document.getElementById("audio-hint").style.opacity = "0";
-        }).catch(error => {
-            console.error("Error al reproducir el audio: ", error);
-            alert("Asegúrate de que el archivo se llame 'musica.mp3' y esté en la misma carpeta que este HTML.");
+            console.log("Reproduciendo...");
+            // Si esto funciona, ocultamos el botón de prueba
+            document.querySelector('button').style.display = 'none';
+        }).catch(err => {
+            console.error("Fallo: ", err);
+            alert("El navegador bloqueó el audio. Haz clic en el botón 'PROBAR AUDIO'.");
         });
     }
 
-    // También intentamos activar al mover el mouse o tocar (para móviles)
-    window.addEventListener('touchstart', playMusic, { once: true });
-    window.addEventListener('mousedown', playMusic, { once: true });
+    // Activadores globales
+    window.addEventListener('click', playMusic);
+    window.addEventListener('touchstart', playMusic);
 </script>
 
 </body>
