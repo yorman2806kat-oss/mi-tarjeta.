@@ -2,69 +2,162 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para mi Reina Katherine</title>
     <style>
-        body { margin: 0; background-color: #000; color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; cursor: pointer; }
-        canvas { position: absolute; }
-        .content { z-index: 10; text-align: center; pointer-events: none; }
-        #name { font-size: 2.8rem; color: #ff4d4d; text-shadow: 0 0 20px #ff4d4d; opacity: 0; transition: opacity 2s; margin-bottom: 5px; }
-        #msg { font-size: 1.2rem; color: #fff; opacity: 0; transition: all 2s; transform: translateY(20px); letter-spacing: 1px; }
-        .instruccion { position: absolute; bottom: 30px; color: #888; font-size: 0.9rem; border: 1px solid #444; padding: 10px 20px; border-radius: 20px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        body {
+            margin: 0;
+            background-color: #000;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        canvas {
+            position: absolute;
+        }
+
+        .content {
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        #name {
+            font-size: 2.8rem;
+            color: #ff4d4d;
+            text-shadow: 0 0 20px #ff4d4d;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+
+        #final-msg {
+            font-size: 1.2rem;
+            padding: 0 10px;
+            background: linear-gradient(90deg, #ff4d4d, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 2s ease-in-out;
+        }
+
+        /* Botón para activar música y dibujo */
+        #playBtn {
+            padding: 15px 30px;
+            border: 2px solid #ff4d4d;
+            background: transparent;
+            color: #ff4d4d;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #ff4d4d;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 15px #ff4d4d; }
+            50% { transform: scale(1.05); box-shadow: 0 0 25px #ff4d4d; }
+            100% { transform: scale(1); box-shadow: 0 0 15px #ff4d4d; }
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: #ff4d4d;
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
     </style>
 </head>
 <body>
+
     <audio id="musica" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
+    <button id="playBtn">TOCA AQUÍ, MY QUEEN</button>
+
     <div class="content">
-        <h1 id="name">Katherine Hernandez</h1> 
-        <h2 id="final-msg">¡Que si te amo? La pregunta es si llegaste a imaginar que yo programara esto para ti!</h2>
-        <h2 id="msg">My Queen</h2>
+        <h1 id="name">Katherine Hernández My Queen</h1> 
+        <h2 id="final-msg">¿Que si me gustas? ¡La pregunta es si llegaste a imaginar que yo programara esto para ti!</h2>
     </div>
+
     <canvas id="heartCanvas"></canvas>
-    <div class="instruccion">Toca la pantalla para dedicarte esta canción</div>
 
     <script>
         const canvas = document.getElementById('heartCanvas');
         const ctx = canvas.getContext('2d');
         const audio = document.getElementById('musica');
+        const playBtn = document.getElementById('playBtn');
+        const nameTag = document.getElementById('name');
+        const finalMsg = document.getElementById('final-msg');
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Iniciar música y dibujo al tocar
-        document.body.addEventListener('click', () => {
+        // Iniciar todo al hacer clic
+        playBtn.addEventListener('click', () => {
+            playBtn.style.display = 'none';
             audio.play();
-            document.querySelector('.instruccion').style.opacity = '0';
-            setTimeout(() => document.querySelector('.instruccion').remove(), 1000);
+            drawHeart();
         });
 
         function drawHeart() {
             ctx.translate(canvas.width / 2, canvas.height / 2);
             ctx.strokeStyle = "#ff4d4d";
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.shadowBlur = 15;
             ctx.shadowColor = "#ff4d4d";
+
             let i = 0;
             const interval = setInterval(() => {
                 let t = i;
                 let x = 16 * Math.pow(Math.sin(t), 3);
                 let y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+                
                 ctx.lineTo(x * 15, y * 15);
                 ctx.stroke();
+
                 i += 0.05;
                 if (i > 6.3) { 
                     clearInterval(interval);
-                    document.getElementById('name').style.opacity = "1";
-                    setTimeout(() => {
-                        document.getElementById('msg').style.opacity = "1";
-                        document.getElementById('msg').style.transform = "translateY(0)";
-                    }, 1000);
+                    showMessages();
                 }
             }, 30);
         }
-        drawHeart();
+
+        function showMessages() {
+            nameTag.style.opacity = "1";
+            setTimeout(() => {
+                finalMsg.style.opacity = "1";
+                finalMsg.style.transform = "translateY(0)";
+                createParticles();
+            }, 1500);
+        }
+
+        function createParticles() {
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.innerHTML = "❤";
+                p.className = "heart-particle";
+                p.style.left = Math.random() * 100 + "vw";
+                p.style.fontSize = (Math.random() * 20 + 10) + "px";
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 4000);
+            }, 300);
+        }
     </script>
 </body>
 </html>
