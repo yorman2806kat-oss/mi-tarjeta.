@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katherine Hernández - My Queen</title>
     <style>
-        /* Estilos base para el fondo oscuro y centrado */
         body {
             margin: 0;
             padding: 0;
-            background-color: #050505; /* Fondo casi negro */
+            background-color: #050505;
             color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -19,54 +18,35 @@
             height: 100vh;
             overflow: hidden;
             text-align: center;
-            cursor: pointer; /* Indica que se puede hacer clic */
+            cursor: pointer;
         }
 
-        /* Contenedor principal invisible */
-        .container {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Títulos */
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            margin-top: 0;
-            font-weight: 400;
-            color: #eee;
-        }
-
-        /* Texto de mensaje corregido y centrado */
+        .container { position: relative; z-index: 2; }
+        h1 { font-size: 2.5rem; margin-bottom: 5px; font-weight: 600; }
+        h2 { font-size: 1.8rem; margin-top: 0; font-weight: 400; color: #eee; }
+        
         .message {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #ccc;
             max-width: 500px;
             margin: 15px auto;
             font-style: italic;
         }
 
-        /* El Corazón Central con efecto de latido */
         .heart-main {
             font-size: 3.5rem;
             color: #ff0000;
             margin: 20px 0;
             filter: drop-shadow(0 0 15px #ff0000);
-            animation: pulse 2s infinite;
+            animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
 
-        /* La Fecha con Efecto Rayo/Neón */
         .date-container {
             position: relative;
             display: inline-block;
@@ -79,91 +59,66 @@
             font-weight: 800;
             position: relative;
             z-index: 3;
-            /* Resplandor del texto */
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
-                         0 0 25px rgba(0, 150, 255, 0.6);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 1);
         }
 
-        /* Efecto de Rayo Azul */
         .lightning {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-3deg);
-            width: 110%;
-            height: 12px;
+            width: 115%;
+            height: 15px;
             background: #00f2ff;
-            filter: blur(8px);
-            box-shadow: 0 0 20px #00d4ff, 0 0 40px #0044ff, 0 0 80px #0022ff;
+            filter: blur(10px);
+            box-shadow: 0 0 20px #00d4ff, 0 0 50px #0044ff, 0 0 100px #0022ff;
             z-index: 1;
             border-radius: 50%;
-            opacity: 0.8;
         }
 
-        /* Corazones de Fondo (Neones flotantes) */
-        .floating-hearts {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
+        #status-msg {
+            position: fixed;
+            bottom: 20px;
+            color: #ff2d55;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: blink 1s infinite;
         }
 
+        @keyframes blink { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0.3; } 
+        }
+
+        /* Corazones decorativos */
         .heart-bg {
             position: absolute;
+            width: 50px; height: 50px;
             border: 2px solid #ff2d55;
-            width: 50px;
-            height: 50px;
             transform: rotate(45deg);
             filter: drop-shadow(0 0 10px #ff2d55);
-            opacity: 0.4;
+            opacity: 0.3;
         }
-
-        /* Crear forma de corazón con CSS para los fondos */
         .heart-bg::before, .heart-bg::after {
-            content: '';
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: transparent;
-            border: 2px solid #ff2d55;
-            border-radius: 50%;
+            content: ''; position: absolute;
+            width: 50px; height: 50px;
+            border: 2px solid #ff2d55; border-radius: 50%;
         }
         .heart-bg::before { top: -25px; left: -2px; border-bottom: none; border-right: none; }
         .heart-bg::after { left: 25px; top: -2px; border-bottom: none; border-left: none; }
-
-        /* Posiciones aleatorias para los corazones de fondo */
-        .h1 { top: 15%; left: 15%; transform: rotate(-20deg) scale(1.2); }
-        .h2 { top: 10%; right: 10%; transform: rotate(15deg) scale(1); }
-        .h3 { bottom: 20%; left: 30%; transform: rotate(-10deg) scale(0.7); }
-        .h4 { bottom: 15%; right: 20%; transform: rotate(25deg) scale(1.5); }
-
-        /* Pista visual para el audio */
-        #audio-hint {
-            position: fixed;
-            bottom: 10px;
-            color: #555;
-            font-size: 0.8rem;
-            z-index: 10;
-        }
+        .h1 { top: 10%; left: 10%; } .h2 { bottom: 10%; right: 10%; }
     </style>
 </head>
-<body onclick="playMusic()">
+<body onclick="startAll()">
 
-    <div class="floating-hearts">
-        <div class="heart-bg h1"></div>
-        <div class="heart-bg h2"></div>
-        <div class="heart-bg h3"></div>
-        <div class="heart-bg h4"></div>
-    </div>
+    <div class="heart-bg h1"></div>
+    <div class="heart-bg h2"></div>
 
     <div class="container">
         <h1>Katherine Hernández</h1>
         <h2>My Queen</h2>
-        
-        <p class="message">TE AMO MI AMOR, SIEMPRE TE LLEVARE EN MI CORAZON.</p>
+        <p class="message">"Eres y siempre serás mi amor, te amo mi reina."</p>
 
         <div class="heart-main">❤</div>
 
@@ -173,30 +128,29 @@
         </div>
     </div>
 
-    <div id="audio-hint">Haz clic en la pantalla para escuchar...</div>
+    <div id="status-msg">TOCA LA PANTALLA PARA EL AUDIO</div>
 
-    <audio id="player" loop preload="auto">
-        <source src="https://archive.org/download/jorge-guerrero-exitos/Jorge%20Guerrero%20-%20Anoranzas.mp3" type="audio/mpeg">
-        Tu navegador no soporta audio.
+    <audio id="musica" loop crossorigin="anonymous">
+        <source src="https://www.mboxdrive.com/A%c3%b1oranzas.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        function playMusic() {
-            var audio = document.getElementById("player");
+        function startAll() {
+            var audio = document.getElementById("musica");
             
-            // Intentar reproducir y ocultar la pista visual si funciona
+            // Forzar carga y reproducción
+            audio.load();
             audio.play().then(() => {
-                console.log("Reproducción iniciada (Jorge Guerrero)");
-                document.getElementById("audio-hint").style.display = "none";
-                // Eliminar el listener para que no se ejecute en cada clic
-                document.body.removeAttribute("onclick");
-            }).catch(error => {
-                // Si falla (ej: sin internet o bloqueo severo), mostramos el mensaje
-                console.log("Esperando interacción... (aún no suena)");
-                document.getElementById("audio-hint").textContent = "Haz clic de nuevo para intentar activar la música.";
+                document.getElementById("status-msg").style.display = "none";
+                console.log("¡Jorge Guerrero sonando!");
+            }).catch(e => {
+                alert("Por favor, toca de nuevo para activar.");
+                console.log("Error de audio:", e);
             });
         }
+        
+        // Soporte extra para móviles
+        document.body.addEventListener('touchstart', startAll, {once: true});
     </script>
-
 </body>
 </html>
