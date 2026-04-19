@@ -48,7 +48,49 @@
             transition: all 2s ease-in-out;
         }
 
-        /* Botón para activar música y dibujo */
+        /* Corazoncitos más pequeños */
+        .heart-particle {
+            position: absolute;
+            color: #ff4d4d;
+            font-size: 15px; /* Tamaño reducido de 20-30px a 15px */
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Fecha relámpago */
+        #lightning-date {
+            position: fixed;
+            top: 20px; /* Ajusta la posición vertical */
+            left: 20px; /* Ajusta la posición horizontal */
+            font-size: 1rem;
+            color: #ff4d4d;
+            text-shadow: 0 0 10px #ff4d4d;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        #lightning-date.active {
+            animation: lightningBeat 0.1s linear infinite, hideDate 0.8s forwards; /* Dura 0.8s */
+        }
+
+        @keyframes lightningBeat {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes hideDate {
+            0% { opacity: 1; }
+            99% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Botón de inicio */
         #playBtn {
             padding: 15px 30px;
             border: 2px solid #ff4d4d;
@@ -68,17 +110,6 @@
             50% { transform: scale(1.05); box-shadow: 0 0 25px #ff4d4d; }
             100% { transform: scale(1); box-shadow: 0 0 15px #ff4d4d; }
         }
-
-        .heart-particle {
-            position: absolute;
-            color: #ff4d4d;
-            animation: float 4s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-        }
     </style>
 </head>
 <body>
@@ -86,6 +117,8 @@
     <audio id="musica" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
+
+    <div id="lightning-date">28/06/20</div>
 
     <button id="playBtn">TOCA AQUÍ, MY QUEEN</button>
 
@@ -103,6 +136,7 @@
         const playBtn = document.getElementById('playBtn');
         const nameTag = document.getElementById('name');
         const finalMsg = document.getElementById('final-msg');
+        const lightningDate = document.getElementById('lightning-date');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -148,12 +182,17 @@
         }
 
         function createParticles() {
+            // Mostrar la fecha relámpago
+            lightningDate.classList.add('active');
+
+            // Crear corazoncitos más pequeños
             setInterval(() => {
                 const p = document.createElement('div');
                 p.innerHTML = "❤";
                 p.className = "heart-particle";
                 p.style.left = Math.random() * 100 + "vw";
-                p.style.fontSize = (Math.random() * 20 + 10) + "px";
+                // Tamaño ya definido en CSS, solo variamos ligeramente la posición inicial vertical
+                p.style.fontSize = (Math.random() * 5 + 10) + "px"; // Entre 10px y 15px
                 document.body.appendChild(p);
                 setTimeout(() => p.remove(), 4000);
             }, 300);
