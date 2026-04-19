@@ -139,12 +139,31 @@
         </div>
     </div>
 
-    <audio id="player" loop preload="auto">
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+   audio id="player" loop preload="auto">
+    <source src="https://archive.org/download/jorge-guerrero-exitos/Jorge%20Guerrero%20-%20Anoranzas.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
 </audio>
 
-<button onclick="playMusic()" style="position: fixed; top: 10px; right: 10px; z-index: 999; padding: 10px; background: #00f2ff; border: none; border-radius: 5px; cursor: pointer;">
-    PROBAR AUDIO
+<div id="audio-hint" style="position: fixed; bottom: 10px; color: #555; font-size: 0.8rem;">
+    Haz clic para escuchar al Guerrero...
+</div>
+
+<script>
+    function playMusic() {
+        var audio = document.getElementById("player");
+        audio.play().then(() => {
+            console.log("Sonando Jorge Guerrero");
+            document.getElementById("audio-hint").style.display = "none";
+        }).catch(err => {
+            console.log("Esperando interacción del usuario...");
+        });
+    }
+
+    // Se activa con cualquier interacción
+    window.addEventListener('click', playMusic);
+    window.addEventListener('touchstart', playMusic);
+</script>
+    PRECIONA LA PANTALLA
 </button>
 
 <script>
