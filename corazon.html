@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katherine Hernández - My Queen</title>
     <style>
+        /* Estilos base para el fondo oscuro y centrado */
         body {
             margin: 0;
             padding: 0;
-            background-color: #050505;
+            background-color: #050505; /* Fondo casi negro */
             color: white;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -21,11 +22,27 @@
             cursor: pointer; /* Indica que se puede hacer clic */
         }
 
-        .container { position: relative; z-index: 2; }
+        /* Contenedor principal invisible */
+        .container {
+            position: relative;
+            z-index: 2;
+        }
 
-        h1 { font-size: 2.8rem; margin-bottom: 5px; font-weight: 600; letter-spacing: 1px; }
-        h2 { font-size: 1.8rem; margin-top: 0; font-weight: 300; color: #eee; }
-        
+        /* Títulos */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            font-weight: 400;
+            color: #eee;
+        }
+
+        /* Texto de mensaje corregido y centrado */
         .message {
             font-size: 1rem;
             color: #ccc;
@@ -34,6 +51,7 @@
             font-style: italic;
         }
 
+        /* El Corazón Central con efecto de latido */
         .heart-main {
             font-size: 3.5rem;
             color: #ff0000;
@@ -48,6 +66,7 @@
             100% { transform: scale(1); }
         }
 
+        /* La Fecha con Efecto Rayo/Neón */
         .date-container {
             position: relative;
             display: inline-block;
@@ -60,9 +79,12 @@
             font-weight: 800;
             position: relative;
             z-index: 3;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+            /* Resplandor del texto */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
+                         0 0 25px rgba(0, 150, 255, 0.6);
         }
 
+        /* Efecto de Rayo Azul */
         .lightning {
             position: absolute;
             top: 50%;
@@ -75,18 +97,31 @@
             box-shadow: 0 0 20px #00d4ff, 0 0 40px #0044ff, 0 0 80px #0022ff;
             z-index: 1;
             border-radius: 50%;
+            opacity: 0.8;
         }
 
-        /* Corazones de fondo */
+        /* Corazones de Fondo (Neones flotantes) */
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .heart-bg {
             position: absolute;
+            border: 2px solid #ff2d55;
             width: 50px;
             height: 50px;
-            border: 2px solid #ff2d55;
             transform: rotate(45deg);
             filter: drop-shadow(0 0 10px #ff2d55);
             opacity: 0.4;
         }
+
+        /* Crear forma de corazón con CSS para los fondos */
         .heart-bg::before, .heart-bg::after {
             content: '';
             position: absolute;
@@ -99,37 +134,36 @@
         .heart-bg::before { top: -25px; left: -2px; border-bottom: none; border-right: none; }
         .heart-bg::after { left: 25px; top: -2px; border-bottom: none; border-left: none; }
 
+        /* Posiciones aleatorias para los corazones de fondo */
         .h1 { top: 15%; left: 15%; transform: rotate(-20deg) scale(1.2); }
         .h2 { top: 10%; right: 10%; transform: rotate(15deg) scale(1); }
         .h3 { bottom: 20%; left: 30%; transform: rotate(-10deg) scale(0.7); }
         .h4 { bottom: 15%; right: 20%; transform: rotate(25deg) scale(1.5); }
 
-        /* Instrucción para el audio */
+        /* Pista visual para el audio */
         #audio-hint {
             position: fixed;
-            bottom: 20px;
-            font-size: 0.8rem;
+            bottom: 10px;
             color: #555;
+            font-size: 0.8rem;
+            z-index: 10;
         }
     </style>
 </head>
 <body onclick="playMusic()">
 
-    <audio id="miMusica" loop>
-        <source src="musica.mp3" type="audio/mpeg">
-        Tu navegador no soporta el audio.
-    </audio>
-
-    <div class="heart-bg h1"></div>
-    <div class="heart-bg h2"></div>
-    <div class="heart-bg h3"></div>
-    <div class="heart-bg h4"></div>
+    <div class="floating-hearts">
+        <div class="heart-bg h1"></div>
+        <div class="heart-bg h2"></div>
+        <div class="heart-bg h3"></div>
+        <div class="heart-bg h4"></div>
+    </div>
 
     <div class="container">
         <h1>Katherine Hernández</h1>
         <h2>My Queen</h2>
         
-        <p class="message">Eres y siempre seras mi amor, te amo mi reina.</p>
+        <p class="message">TE AMO MI AMOR, SIEMPRE TE LLEVARE EN MI CORAZON.</p>
 
         <div class="heart-main">❤</div>
 
@@ -139,51 +173,30 @@
         </div>
     </div>
 
-   audio id="player" loop preload="auto">
-    <source src="https://archive.org/download/jorge-guerrero-exitos/Jorge%20Guerrero%20-%20Anoranzas.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
-</audio>
+    <div id="audio-hint">Haz clic en la pantalla para escuchar...</div>
 
-<div id="audio-hint" style="position: fixed; bottom: 10px; color: #555; font-size: 0.8rem;">
-    Haz clic para escuchar al Guerrero...
-</div>
+    <audio id="player" loop preload="auto">
+        <source src="https://archive.org/download/jorge-guerrero-exitos/Jorge%20Guerrero%20-%20Anoranzas.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
 
-<script>
-    function playMusic() {
-        var audio = document.getElementById("player");
-        audio.play().then(() => {
-            console.log("Sonando Jorge Guerrero");
-            document.getElementById("audio-hint").style.display = "none";
-        }).catch(err => {
-            console.log("Esperando interacción del usuario...");
-        });
-    }
-
-    // Se activa con cualquier interacción
-    window.addEventListener('click', playMusic);
-    window.addEventListener('touchstart', playMusic);
-</script>
-    PROBAR AUDIO
-</button>
-
-<script>
-    function playMusic() {
-        var audio = document.getElementById("player");
-        
-        audio.play().then(() => {
-            console.log("Reproduciendo...");
-            // Si esto funciona, ocultamos el botón de prueba
-            document.querySelector('button').style.display = 'none';
-        }).catch(err => {
-            console.error("Fallo: ", err);
-            alert("El navegador bloqueó el audio. Haz clic en el botón 'PROBAR AUDIO'.");
-        });
-    }
-
-    // Activadores globales
-    window.addEventListener('click', playMusic);
-    window.addEventListener('touchstart', playMusic);
-</script>
+    <script>
+        function playMusic() {
+            var audio = document.getElementById("player");
+            
+            // Intentar reproducir y ocultar la pista visual si funciona
+            audio.play().then(() => {
+                console.log("Reproducción iniciada (Jorge Guerrero)");
+                document.getElementById("audio-hint").style.display = "none";
+                // Eliminar el listener para que no se ejecute en cada clic
+                document.body.removeAttribute("onclick");
+            }).catch(error => {
+                // Si falla (ej: sin internet o bloqueo severo), mostramos el mensaje
+                console.log("Esperando interacción... (aún no suena)");
+                document.getElementById("audio-hint").textContent = "Haz clic de nuevo para intentar activar la música.";
+            });
+        }
+    </script>
 
 </body>
 </html>
